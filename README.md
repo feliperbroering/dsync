@@ -51,6 +51,17 @@ This makes the `dsync` binary available in the Cargo `PATH`.
 
 Once releases are published, download the executable and place it in your `PATH`.
 
+## Releases
+
+GitHub Actions now validates prebuilt release archives for:
+
+- `x86_64-unknown-linux-gnu`
+- `aarch64-unknown-linux-gnu`
+- `x86_64-apple-darwin`
+- `aarch64-apple-darwin`
+
+Versioning and GitHub Release orchestration are handled with `release-please`.
+
 ## Configuration
 
 ### Linear
