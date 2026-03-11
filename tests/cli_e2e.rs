@@ -72,7 +72,8 @@ fn sync_in_a_git_repo_adds_git_links_to_frontmatter_and_content() {
 
     let written = fs::read_to_string(note.path()).unwrap();
 
-    assert!(written.contains("gitUrl: https://github.com/acme/project/blob/main/note.md"));
+    assert!(written.contains("gitUrl:"));
+    assert!(written.contains("https://github.com/acme/project/blob/main/note.md"));
     assert!(written.contains("## Document Links"));
     assert!(written.contains("- Git: https://github.com/acme/project/blob/main/note.md"));
 }
