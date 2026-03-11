@@ -1,23 +1,21 @@
 name: Release Please
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       release_as:
-        description: "Force a release version (for example: 0.1.0)"
+        description: "Force a release version (for example: 0.2.0)"
         required: false
         type: string
       skip_github_pull_request:
         description: "Create the GitHub release directly instead of opening or updating a release PR"
         required: false
-        default: false
+        default: true
         type: boolean
 
 env:
   CARGO_TERM_COLOR: always
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 permissions:
   contents: write
@@ -36,12 +34,10 @@ jobs:
         id: release
         uses: googleapis/release-please-action@v4
         with:
-          release-type: rust
-          package-name: dsync
-          changelog-path: CHANGELOG.md
-          include-v-in-tag: true
+          config-file: .github/release-please-config.json
+          manifest-file: .github/.release-please-manifest.json
           release-as: ${{ github.event.inputs.release_as }}
-          skip-github-pull-request: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.skip_github_pull_request == 'true' }}
+          skip-github-pull-request: ${{ github.event.inputs.skip_github_pull_request }}
 
   build-release:
     name: Build Release (${{ matrix.target }})
@@ -56,9 +52,9 @@ jobs:
             target: x86_64-unknown-linux-gnu
           - os: ubuntu-latest
             target: aarch64-unknown-linux-gnu
-          - os: macos-13
+          - os: macos-latest
             target: x86_64-apple-darwin
-          - os: macos-14
+          - os: macos-latest
             target: aarch64-apple-darwin
     steps:
       - name: Check out repository
